@@ -6,6 +6,9 @@ connectDB();
 app.get("/", (req, res) => {
   res.send("api runnng..");
 });
+//init middleware
+
+app.use(express.json({ extended: false }));
 
 //define routes
 
