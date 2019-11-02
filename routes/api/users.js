@@ -46,7 +46,7 @@ router.post(
 
       await user.save();
       const token = user.generateToken();
-      res.send({ token });
+      res.header("x-auto-token", token).send({ token });
     } catch (err) {
       console.log(err.message);
       res.status(500).send("server error");
