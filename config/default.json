@@ -1,3 +1,4 @@
 {
-  "mongoURI": "mongodb+srv://frank920120:fj920120@devconnect-tnv1q.mongodb.net/test?retryWrites=true&w=majority"
+  "mongoURI": "mongodb+srv://frank920120:fj920120@devconnect-tnv1q.mongodb.net/test?retryWrites=true&w=majority",
+  "jwtSectet": "mysecrettoek"
 }

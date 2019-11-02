@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-
+const jwt = require("jsonwebtoken");
+const config = require("config");
 const userScheme = new mongoose.Schema({
   name: {
     type: String,
@@ -22,6 +23,18 @@ const userScheme = new mongoose.Schema({
     default: Date.now
   }
 });
+
+userScheme.methods.generateToken = function() {
+  const payload = {
+    user: {
+      id: this._id
+    }
+  };
+  const token = jwt.sign(payload, config.get("jwtSectet"), {
+    expiresIn: 360000
+  });
+  return token;
+};
 
 const user = mongoose.model("User", userScheme);
 
