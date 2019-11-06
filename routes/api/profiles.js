@@ -84,8 +84,9 @@ router.post(
         profile = await Profile.findOneAndUpdate(
           { user: req.user.id },
           {
-            $set: { new: true }
-          }
+            $set: profileFields
+          },
+          { new: true }
         );
         return res.json(profile);
       }
@@ -99,4 +100,36 @@ router.post(
     }
   }
 );
+//@router Get api/profiles
+//@desc get all profiles
+//@access private
+router.get("/", async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate("user", ["name", "avatar"]);
+    res.json(profiles);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+//@router Get api/profiles/user/user_id
+//@desc get profile by id
+//@access private
+router.get("/user/:user_id", async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.params.user_id
+    }).populate("user", ["name", "avatar"]);
+    if (!profile) {
+      return res.status(400).json({ msg: "There is no profile for this user" });
+    }
+    res.json(profile);
+  } catch (error) {
+    if (error.kind == "ObjectId") {
+      return res.status(400).json({ msg: "Invalid object id" });
+    }
+    console.log(error.message);
+    res.status(500).send("Server Error");
+  }
+});
 module.exports = router;
